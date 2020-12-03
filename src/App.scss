@@ -1,4 +1,9 @@
-.App {
+body {
+  margin: 0;
+}
+
+.app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }

@@ -1,7 +1,7 @@
 {
-  "name": "framework-react-typescript-sass",
-  "version": "1.0.3",
-  "description": "Framework: React.js, TypeScript, SASS",
+  "name": "clapsync",
+  "version": "1.0.0",
+  "description": "ClapSync",
   "main": "index.tsx",
   "scripts": {
     "start": "webpack-dev-server --mode development",

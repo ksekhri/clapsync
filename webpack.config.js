@@ -55,13 +55,13 @@ module.exports = {
       filename: path.resolve(__dirname, 'dist/index.html'),
       template: path.resolve(__dirname, 'src/index.ejs'),
       scriptLoading: 'defer',
-      title: 'Page Title',
+      title: 'ClapSync',
       appMountId: 'root',
       noscriptText: 'Requires JavaScript',
       meta: [
         {
           name: 'description',
-          content: 'Search engine description',
+          content: 'ClapSync by Karan Sekhri',
         },
         {
           name: 'viewport',

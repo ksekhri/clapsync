@@ -1,0 +1,44 @@
+.card {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  background: rgba(0, 0, 0, 0.9);
+  position: relative;
+
+  .wipe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #000;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 0;
+  }
+
+  .flash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.7);
+    transform-origin: left;
+    z-index: 0;
+  }
+
+  .content {
+    color: #fff;
+    font-size: 4rem;
+    z-index: 2;
+
+    &.flashing {
+      color: #000;
+    }
+  }
+}

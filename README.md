@@ -1,4 +1,4 @@
-# Framework: React.js, TypeScript, SASS
+# ClapSync
 
 ## Libraries
 ### Core
