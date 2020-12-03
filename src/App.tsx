@@ -106,6 +106,11 @@ function App() {
   return(
     <div className="app" onClick={onClick}>
       <Card content={cardContent} percentageWiped={percentageWiped} flash={flash}/>
+      {!flash && (
+        <div className="byline">
+          © 2020 <a onClick={e => e.stopPropagation()} href="https://ksekhri.com">Karan Sekhri</a> — <a onClick={e => e.stopPropagation()} href="https://github.com/ksekhri/clapsync">Source</a>
+        </div>
+      )}
     </div>
   );
 }
