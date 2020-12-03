@@ -1,0 +1,45 @@
+{
+  "name": "framework-react-typescript-sass",
+  "version": "1.0.3",
+  "description": "Framework: React.js, TypeScript, SASS",
+  "main": "index.tsx",
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "check-types": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksekhri/framework-react-typescript-sass.git"
+  },
+  "author": "Karan Sekhri",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/react": "^16.14.2",
+    "@types/react-dom": "^16.9.10",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^3.6.0",
+    "file-loader": "^4.3.0",
+    "html-webpack-plugin": "^4.5.0",
+    "node-sass": "^4.14.1",
+    "react-hot-loader": "^4.13.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^0.23.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  }
+}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <% if (htmlWebpackPlugin.options.appMountId) { %>
+    <div id="<%= htmlWebpackPlugin.options.appMountId %>"></div>
+    <% } %>
+    <% if (htmlWebpackPlugin.options.noscriptText) { %>
+    <noscript><%= htmlWebpackPlugin.options.noscriptText %></noscript>
+    <% } %>
+  </body>
+</html>
