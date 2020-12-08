@@ -4,7 +4,7 @@ import './App.scss'
 import { Card } from './components/card/card'
 
 enum CardState {
-  READY = 'Ready: 3, 2, 1, 👏',
+  READY = 'Get ready... (3, 2, 1, 👏)',
   THREE = '3...',
   TWO = '2...',
   ONE = '1...',
@@ -16,79 +16,90 @@ function App() {
   const [cardContent, setCardContent] = React.useState(CardState.Rest)
   const [percentageWiped, setPercentageWiped] = React.useState(0)
   const [flash, setFlash] = React.useState(false)
+  const [isRunning, setIsRunning] = React.useState(false)
 
   const resetCard = () => {
     setCardContent(CardState.Rest)
     setPercentageWiped(0)
     setFlash(false)
+    setIsRunning(false)
   }
 
-  const incrementDateTo = ({date, second, minute}: {date: Date, second: number, minute?: number}) => (
+  const incrementDateTo = ({startTime, second, minute}: {startTime: Date, second: number, minute?: number}) => (
     new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDay() - 1,
-      date.getHours(),
-      minute ?? date.getMinutes(),
+      startTime.getFullYear(),
+      startTime.getMonth(),
+      startTime.getDate(),
+      startTime.getHours(),
+      minute ?? startTime.getMinutes(),
       second,
       0,
     )
   )
 
-  const calculateEndTimes = (date: Date, endSecond: number) => ({
-    readyTime: incrementDateTo({date, second: endSecond - 4}),
-    threeTime: incrementDateTo({date, second: endSecond - 3}),
-    twoTime: incrementDateTo({date, second: endSecond - 2}),
-    oneTime: incrementDateTo({date, second: endSecond - 1}),
-    clapTime: incrementDateTo({
-      date,
-      second: endSecond === 60 ? 0 : endSecond,
-      minute: endSecond === 60 ? date.getMinutes() + 1 : undefined
-    }),
+  const calculateEndTimes = (startTime: Date, endSecond: number) => ({
+    threeTime: incrementDateTo({startTime, second: endSecond - 3}),
+    twoTime: incrementDateTo({startTime, second: endSecond - 2}),
+    oneTime: incrementDateTo({startTime, second: endSecond - 1}),
+    clapTime: incrementDateTo({startTime, second: endSecond }),
   })
 
-  const getPercentageToAnimate = (callback: (percentage: number) => void) => {
-    const timeStart = new Date()
+  const runClapSync = (callback: (percentage: number) => void) => {
+    setIsRunning(true)
+    const startTime = new Date()
 
-    const seconds = timeStart.getSeconds()
-    let endTimes: {readyTime: Date, threeTime: Date, twoTime: Date, oneTime: Date, clapTime: Date}
+    const seconds = startTime.getSeconds()
+    let endTimes: {threeTime: Date, twoTime: Date, oneTime: Date, clapTime: Date}
     if (seconds < 11) {
-      endTimes = calculateEndTimes(timeStart, 15)
+      endTimes = calculateEndTimes(startTime, 15)
     } else if (seconds < 26) {
-      endTimes = calculateEndTimes(timeStart, 30)
+      endTimes = calculateEndTimes(startTime, 30)
     } else if (seconds < 41) {
-      endTimes = calculateEndTimes(timeStart, 45)
+      endTimes = calculateEndTimes(startTime, 45)
+    } else if (seconds < 56) {
+      endTimes = {
+        threeTime: incrementDateTo({startTime, second: 57}),
+        twoTime: incrementDateTo({startTime, second: 58}),
+        oneTime: incrementDateTo({startTime, second: 59}),
+        clapTime: incrementDateTo({startTime, second: 0, minute: startTime.getMinutes() + 1 }),
+      }
     } else {
-      endTimes = calculateEndTimes(timeStart, 60)
+      const minute = startTime.getMinutes() + 1
+      endTimes = {
+        threeTime: incrementDateTo({startTime, second: 12, minute }),
+        twoTime: incrementDateTo({startTime, second: 13, minute }),
+        oneTime: incrementDateTo({startTime, second: 14, minute }),
+        clapTime: incrementDateTo({startTime, second: 15, minute }),
+      }
     }
 
-    const runClapSync = () => {
+    const incrementClapSync = () => {
       const currentTime = new Date().getTime()
 
       if (currentTime < endTimes.threeTime.getTime()) {
         setCardContent(CardState.READY)
-        const percentageDone = (currentTime - timeStart.getTime()) / (endTimes.threeTime.getTime() - timeStart.getTime())
+        const percentageDone = (currentTime - startTime.getTime()) / (endTimes.threeTime.getTime() - startTime.getTime())
         const percentageToAnimate = Math.min(percentageDone, 1)
         callback(percentageToAnimate)
-        window.requestAnimationFrame(runClapSync)
+        window.requestAnimationFrame(incrementClapSync)
       } else if (currentTime < endTimes.twoTime.getTime()) {
         setCardContent(CardState.THREE)
         const percentageDone = 1 - (endTimes.twoTime.getTime() - currentTime) / 1000
         const percentageToAnimate = Math.min(percentageDone, 1)
         callback(percentageToAnimate)
-        window.requestAnimationFrame(runClapSync)
+        window.requestAnimationFrame(incrementClapSync)
       } else if (currentTime < endTimes.oneTime.getTime()) {
         setCardContent(CardState.TWO)
         const percentageDone = 1 - (endTimes.oneTime.getTime() - currentTime) / 1000
         const percentageToAnimate = Math.min(percentageDone, 1)
         callback(percentageToAnimate)
-        window.requestAnimationFrame(runClapSync)
+        window.requestAnimationFrame(incrementClapSync)
       } else if (currentTime < endTimes.clapTime.getTime()) {
         setCardContent(CardState.ONE)
         const percentageDone = 1 - (endTimes.clapTime.getTime() - currentTime) / 1000
         const percentageToAnimate = Math.min(percentageDone, 1)
         callback(percentageToAnimate)
-        window.requestAnimationFrame(runClapSync)
+        window.requestAnimationFrame(incrementClapSync)
       } else {
         setFlash(true)
         setCardContent(CardState.Clap)
@@ -96,11 +107,11 @@ function App() {
       }
     }
 
-    window.requestAnimationFrame(runClapSync)
+    window.requestAnimationFrame(incrementClapSync)
   }
 
   const onClick = () => {
-    getPercentageToAnimate(setPercentageWiped)
+    !isRunning && runClapSync(setPercentageWiped)
   }
 
   return(
