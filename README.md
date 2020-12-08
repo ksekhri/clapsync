@@ -1,5 +1,8 @@
 # ClapSync
 
+## Description
+Web app that allows users to clap sync remotely. Hosted at [ClapSync.app](https://clapsync.app).
+
 ## Libraries
 ### Core
 - [React](https://github.com/facebook/react) & [React DOM](https://github.com/facebook/react) for views.
